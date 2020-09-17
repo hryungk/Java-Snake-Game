@@ -160,27 +160,20 @@ public class Board extends JPanel implements ActionListener {
 
     private void checkCollision() {
 
-        for (int z = dots; z > 0; z--) {
-
-            if ((z > 4) && (x[0] == x[z]) && (y[0] == y[z])) {
-                inGame = false;
-            }
+        // Check whether the snake has hit itself.
+        int z = dots;
+        while (z > 0 && inGame) {
+            boolean hitItself = (z >= 4) && (x[0] == x[z]) && (y[0] == y[z]);
+            inGame = !hitItself; // Game continues as long as it doesn't hit itself.
+            z--;
         }
+        
+        if (inGame) { // If the snake hasn't hit itself,
 
-        if (y[0] >= B_HEIGHT) {
-            inGame = false;
-        }
-
-        if (y[0] < 0) {
-            inGame = false;
-        }
-
-        if (x[0] >= B_WIDTH) {
-            inGame = false;
-        }
-
-        if (x[0] < 0) {
-            inGame = false;
+            // Check whether the snake has hit one of the walls.
+            boolean hitWall = (y[0] >= B_HEIGHT) || (y[0] < 0) || 
+                              (x[0] >= B_WIDTH) || (x[0] < 0);
+            inGame = !hitWall;  // Game continues as long as it doesn't hit the wall.
         }
         
         if (!inGame) {
